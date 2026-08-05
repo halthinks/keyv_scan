@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "paths": [
+    {
+      "path": "~/.local/bin/gh-token-monitor.sh",
+      "type": "dead-man-switch watcher",
+      "severity": "critical",
+      "read_content": true,
+      "platforms": [
+        "linux",
+        "darwin"
+      ]
+    },
+    {
+      "path": "~/.config/gh-token-monitor/token",
+      "type": "stolen-token state",
+      "severity": "critical",
+      "sensitive": true,
+      "read_content": false,
+      "platforms": [
+        "linux",
+        "darwin"
+      ]
+    },
+    {
+      "path": "~/.config/gh-token-monitor/handler",
+      "type": "remote-handler state",
+      "severity": "critical",
+      "sensitive": true,
+      "read_content": false,
+      "platforms": [
+        "linux",
+        "darwin"
+      ]
+    },
+    {
+      "path": "~/.config/gh-token-monitor/started_at",
+      "type": "dead-man-switch state",
+      "severity": "critical",
+      "read_content": false,
+      "platforms": [
+        "linux",
+        "darwin"
+      ]
+    },
+    {
+      "path": "~/Library/LaunchAgents/com.user.gh-token-monitor.plist",
+      "type": "macOS LaunchAgent persistence",
+      "severity": "critical",
+      "read_content": true,
+      "platforms": [
+        "darwin"
+      ]
+    },
+    {
+      "path": "~/.config/systemd/user/gh-token-monitor.service",
+      "type": "Linux systemd user persistence",
+      "severity": "critical",
+      "read_content": true,
+      "platforms": [
+        "linux"
+      ]
+    },
+    {
+      "path": "/tmp/gh-token-monitor.out.log",
+      "type": "persistence output log",
+      "severity": "high",
+      "read_content": false,
+      "platforms": [
+        "linux",
+        "darwin"
+      ]
+    },
+    {
+      "path": "/tmp/gh-token-monitor.err.log",
+      "type": "persistence error log",
+      "severity": "high",
+      "read_content": false,
+      "platforms": [
+        "linux",
+        "darwin"
+      ]
+    }
+  ],
+  "temp_globs": [
+    "bun-dl-*",
+    "gh-token-monitor.*.log",
+    "gh-token-monitor.out.log",
+    "gh-token-monitor.err.log"
+  ],
+  "process_indicators": [
+    "setup.mjs",
+    "Math_Symbol.js",
+    "math_init.js",
+    "bun-dl-",
+    "gh-token-monitor",
+    "com.user.gh-token-monitor"
+  ],
+  "autostart_files": [
+    ".claude/settings.json",
+    ".vscode/tasks.json"
+  ],
+  "source": "https://socket.dev/blog/popular-npm-packages-in-the-keyv-and-cacheable-namespaces-compromised-in-active-supply-chain"
+}

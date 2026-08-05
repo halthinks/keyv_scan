@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/keyv-incident-scanner/report.schema.json",
+  "title": "Keyv Incident Scanner report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "scanner", "campaign", "scan", "iocs", "coverage", "statistics", "summary", "findings", "fatal_errors", "exit_code", "exit_code_contract"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "scanner": {
+      "type": "object",
+      "required": ["id", "name", "version", "read_only"],
+      "properties": {
+        "id": { "const": "keyv-incident-scanner" },
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "read_only": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "campaign": {
+      "type": "object",
+      "required": ["name", "references"],
+      "properties": {
+        "name": { "type": "string" },
+        "references": { "type": "array", "items": { "type": "string", "format": "uri" } }
+      },
+      "additionalProperties": false
+    },
+    "scan": { "type": "object" },
+    "iocs": {
+      "type": "object",
+      "required": ["file", "manifest_file", "sha256", "fetched_at", "fresh", "bootstrap", "package_count", "version_pair_count"],
+      "properties": {
+        "file": { "type": "string" },
+        "manifest_file": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "auxiliary_sha256": {
+          "type": "object",
+          "required": ["hashes_json", "persistence_json"],
+          "properties": {
+            "hashes_json": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "persistence_json": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          },
+          "additionalProperties": false
+        },
+        "fetched_at": { "type": "string", "format": "date-time" },
+        "age_hours": { "type": ["number", "null"], "minimum": 0 },
+        "future_dated": { "type": "boolean" },
+        "fresh": { "type": "boolean" },
+        "bootstrap": { "type": "boolean" },
+        "package_count": { "type": "integer", "minimum": 1 },
+        "version_pair_count": { "type": "integer", "minimum": 1 },
+        "duplicate_pairs_ignored": { "type": "integer", "minimum": 0 },
+        "update_events": { "type": "array" },
+        "manifest": { "type": ["object", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "coverage": {
+      "type": "object",
+      "required": ["complete", "gaps", "operational_errors"],
+      "properties": {
+        "complete": { "type": "boolean" },
+        "gaps": { "type": "array", "items": { "$ref": "#/$defs/coverageGap" } },
+        "operational_errors": { "type": "array" }
+      },
+      "additionalProperties": false
+    },
+    "statistics": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "summary": { "type": "object" },
+    "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } },
+    "fatal_errors": { "type": "array" },
+    "exit_code": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "exit_code_contract": { "type": "object" }
+  },
+  "$defs": {
+    "coverageGap": {
+      "type": "object",
+      "required": ["check", "message", "severity"],
+      "properties": {
+        "check": { "type": "string" },
+        "message": { "type": "string" },
+        "severity": { "enum": ["error", "warning", "info"] },
+        "metadata": {}
+      },
+      "additionalProperties": false
+    },
+    "finding": {
+      "type": "object",
+      "required": ["id", "rule_id", "title", "category", "severity", "confidence", "source_kind", "evidence", "remediation", "references"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-f0-9]{20}$" },
+        "rule_id": { "type": "string", "pattern": "^KVS-" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "severity": { "enum": ["critical", "high", "medium", "low", "info"] },
+        "confidence": { "enum": ["exact", "strong", "potential", "heuristic"] },
+        "source_kind": { "type": "string" },
+        "package": {
+          "type": "object",
+          "required": ["name"],
+          "properties": { "name": { "type": "string" }, "version": { "type": "string" } },
+          "additionalProperties": false
+        },
+        "location": {
+          "type": "object",
+          "properties": { "path": { "type": "string" }, "entry": { "type": "string" }, "line": { "type": "integer", "minimum": 1 } },
+          "additionalProperties": false
+        },
+        "evidence": { "type": "string" },
+        "remediation": { "type": "string" },
+        "references": { "type": "array", "items": { "type": "string" } },
+        "metadata": {}
+      },
+      "additionalProperties": false
+    }
+  }
+}

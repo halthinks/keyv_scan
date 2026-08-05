@@ -1,0 +1,38 @@
+[
+  {
+    "algorithm": "sha256",
+    "hash": "54dc7ea54a1317cca0e890a2770630cf7fa6c97813e0cb9d2caa93012b350668",
+    "rule_id": "KVS-HASH-SETUP-NPM",
+    "severity": "critical",
+    "names": ["setup.mjs"],
+    "description": "Exact SHA-256 of the npm-tarball preinstall loader setup.mjs",
+    "source": "https://socket.dev/blog/popular-npm-packages-in-the-keyv-and-cacheable-namespaces-compromised-in-active-supply-chain"
+  },
+  {
+    "algorithm": "sha256",
+    "hash": "fd3ca4007b225fdf8de7af4345a19179d5efa8c4bb9205f88cda806e5684b1eb",
+    "rule_id": "KVS-HASH-SETUP-REPOSITORY",
+    "severity": "critical",
+    "names": ["setup.mjs"],
+    "description": "Exact SHA-256 of the repository loader used by .claude and .vscode autostart variants",
+    "source": "https://socket.dev/blog/popular-npm-packages-in-the-keyv-and-cacheable-namespaces-compromised-in-active-supply-chain"
+  },
+  {
+    "algorithm": "sha256",
+    "hash": "9fc2570b7cef51c1b8df116d144d11ff4096357be7d2c4c6367cfc2509cf1bcc",
+    "rule_id": "KVS-HASH-PAYLOAD",
+    "severity": "critical",
+    "names": ["Math_Symbol.js", "math_init.js"],
+    "description": "Exact SHA-256 of the documented second-stage Bun payload",
+    "source": "https://socket.dev/blog/popular-npm-packages-in-the-keyv-and-cacheable-namespaces-compromised-in-active-supply-chain"
+  },
+  {
+    "algorithm": "sha512",
+    "hash": "37f9f847e9c3e520b47d83a9029e199dbc30c6a195a1d80467d0fb1a6fd5068728ad4d1a422995ca578359263afdac5d3b4fed7a6b9befad27de19cca6966952",
+    "rule_id": "KVS-HASH-KEYV-TARBALL",
+    "severity": "critical",
+    "names": ["keyv-6.0.0.tgz"],
+    "description": "Exact SHA-512 of the documented malicious keyv@6.0.0 npm tarball",
+    "source": "https://socket.dev/blog/popular-npm-packages-in-the-keyv-and-cacheable-namespaces-compromised-in-active-supply-chain"
+  }
+]

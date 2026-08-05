@@ -1,0 +1,25 @@
+{
+  "name": "keyv-incident-scanner",
+  "version": "1.0.0",
+  "description": "Read-only cross-platform scanner for the August 2026 Keyv/Cacheable npm supply-chain compromise",
+  "private": true,
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": {
+    "keyv-scan": "bin/keyv-scan.js"
+  },
+  "scripts": {
+    "scan": "node bin/keyv-scan.js scan",
+    "scan:full": "node bin/keyv-scan.js scan --system",
+    "update-iocs": "node bin/keyv-scan.js update-iocs",
+    "verify-iocs": "node bin/keyv-scan.js verify-iocs",
+    "test": "node --test",
+    "check": "node scripts/check-syntax.js && node --test && node bin/keyv-scan.js verify-iocs --max-ioc-age-hours 100000 && node scripts/verify-manifest.js",
+    "generate-manifest": "node scripts/generate-manifest.js",
+    "verify-manifest": "node scripts/verify-manifest.js",
+    "check-syntax": "node scripts/check-syntax.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

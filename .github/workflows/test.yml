@@ -1,0 +1,34 @@
+name: test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [18, 20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - name: Self-scan
+        shell: bash
+        run: node bin/keyv-scan.js scan . --project-only --offline --no-auto-update --no-processes --no-persistence --strict-permissions --max-ioc-age-hours 100000 --output-dir self-scan-report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: self-scan-${{ matrix.os }}-node-${{ matrix.node }}
+          path: self-scan-report/

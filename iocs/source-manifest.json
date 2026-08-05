@@ -1,0 +1,25 @@
+{
+  "acquisition_note": "The source rows were acquired from the current GitHub-hosted Wiz Research CSV. Re-encoding the acquired rows with the source CRLF line endings reproduces Git blob 90d48f5b27a74ae3ae41bcf80159ab856f2c306d exactly; the bundled canonical CSV uses LF line endings. Runtime refreshes replace this snapshot atomically after schema, count, and regression validation.",
+  "auxiliary_sha256": {
+    "hashes_json": "da130a8aceb1a6889f8cd5fa3ae348870d6e1920d491f101585b52ce524ff1ce",
+    "persistence_json": "71516b307b24bab0c518d29de25de8f3306779355f80d795161a820aa9111d75"
+  },
+  "bootstrap": false,
+  "canonical_line_endings": "LF",
+  "canonical_sha256": "27a11ac94f9fbfe8435c8e3371e0f0c8d1abfe8f92e44e8a1a070748cccdb7c9",
+  "fetched_at": "2026-08-05T10:48:58Z",
+  "generated_by": "keyv-incident-scanner/1.0.0",
+  "package_count": 443,
+  "raw_sha256": "344ad7046a092be655942b9f9e990ae523e06551315b3973b132b1577e134727",
+  "resolved_url": "https://raw.githubusercontent.com/wiz-sec-public/wiz-research-iocs/main/reports/keyv-packages.csv",
+  "response_etag": null,
+  "response_last_modified": null,
+  "schema_version": 1,
+  "source_blob_sha": "90d48f5b27a74ae3ae41bcf80159ab856f2c306d",
+  "source_line_endings": "CRLF",
+  "source_path": "reports/keyv-packages.csv",
+  "source_ref": "main",
+  "source_repository": "wiz-sec-public/wiz-research-iocs",
+  "source_url": "https://raw.githubusercontent.com/wiz-sec-public/wiz-research-iocs/main/reports/keyv-packages.csv",
+  "version_pair_count": 2235
+}

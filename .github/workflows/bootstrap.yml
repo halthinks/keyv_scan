@@ -1,0 +1,73 @@
+name: Expand full incident scanner
+
+on:
+  push:
+    branches:
+      - agent/full-incident-scanner-pr
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Reconstruct and verify source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > /tmp/scanner-source.tar.gz
+          for sha in \
+            f0536faff7eabe36145547e14536e15c03e0428c \
+            b884ad8bd602d9437b848102b336667f6d69500a \
+            ad855375f53d99aa2f92c1345434cb4d82da8c13 \
+            01f39f273495afc96fe063c5cd037da91579ac1d \
+            d1ff0abaae547161e9dd068d4141765214cfa0be \
+            8819feafaf1c060891dbee974ea8f39e519df0fe \
+            0445f444856aa96b735f6142aff6e8b249caca3b \
+            5e68ddae48cab23173cb29cf726e8149a8e0c9db \
+            ec91fda0e6149e88f5c45bef04b75a97190f04d6 \
+            c68694a920a36723551510780f24e833f69ae5c7 \
+            1a8a54568177d03676048bc454c6701cd45de8fc \
+            882559bd7ab9cd88cc58cf143c6ed959aaa52322 \
+            6f6d02d47c3fb603d2fe9e9a8d68f8c11e371727 \
+            cebe7c566fc63e7a4c99842053b1f469eff63b22 \
+            7f2cdf8c6aab57ed739415d5ac6b46f66917b8ca
+          do
+            gh api "repos/${GITHUB_REPOSITORY}/git/blobs/${sha}" --jq .content \
+              | tr -d '\n' \
+              | base64 --decode >> /tmp/scanner-source.tar.gz
+          done
+          echo "5198c4549ccc8a83f96fe419e1af067f554832250eff46411c985c23c7aa0425  /tmp/scanner-source.tar.gz" | sha256sum -c -
+      - name: Replace repository with scanner source
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf -- {} +
+          tar -xzf /tmp/scanner-source.tar.gz -C .
+      - name: Validate source
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npm run check
+          npm run verify-iocs
+          npm run verify-manifest
+      - name: Commit expanded scanner
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: replace scanner with full incident scanner [skip ci]"
+          git push origin HEAD:agent/full-incident-scanner-pr
